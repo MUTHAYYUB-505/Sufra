@@ -12,7 +12,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden; /* prevent horizontal scroll */
+  overflow-x: clip;
   font-family: 'YourFont', sans-serif;
 }
   /* Navbar */
@@ -378,9 +378,12 @@ nav h2 {
 .menu-carousel {
   display: flex;
   gap: 20px;
-  overflow-x: auto;           /* enable horizontal scroll */
-  scroll-behavior: smooth;    /* smooth scrolling */
-  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  touch-action: pan-x;      /* ⭐ allows horizontal swipe */
+  cursor: grab;
 }
 
 .menu-carousel::-webkit-scrollbar {
@@ -829,7 +832,6 @@ nav h2 {
     <span></span>
   </div>
 </nav>
- 
 
 <header>
   <div class="hero">
@@ -841,20 +843,19 @@ nav h2 {
 
 <script>
 const hamburger = document.querySelector(".hamburger");
-const navLinks = document.querySelector(".nav-links");
+const navLinks = document.querySelector("nav div");
 
 hamburger.addEventListener("click", (e) => {
   e.stopPropagation(); // prevent immediate close
   navLinks.style.display = navLinks.style.display === "flex" ? "none" : "flex";
+  navLinks.style.flexDirection = "column";
+  navLinks.style.position = "absolute";
+  navLinks.style.top = "60px";
+  navLinks.style.right = "20px";
+  navLinks.style.background = "rgba(0,0,0,0.9)";
+  navLinks.style.padding = "15px 20px";
+  navLinks.style.borderRadius = "10px";
 });
-
-// Close menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-    navLinks.style.display = "none";
-  }
-});
-
 
 /* Close menu when clicking outside */
 document.addEventListener("click", () => {
@@ -869,9 +870,9 @@ document.addEventListener("click", () => {
   </div>
 
   <div class="about-slider">
-    <div class="slide active" style="background-image: url('s8.jpg');"></div>
-    <div class="slide" style="background-image: url('s7.jpg');"></div>
-    <div class="slide" style="background-image: url('s8.jpg');"></div>
+    <div class="slide active" style="background-image: url('/s8.jpg');"></div>
+    <div class="slide" style="background-image: url('/s7.jpg');"></div>
+    <div class="slide" style="background-image: url('/s8.jpg');"></div>
   </div>
 
   <div class="about-text">
@@ -923,16 +924,16 @@ setInterval(() => {
   <div class="carousel-outer">
     <div class="menu-carousel">
       <div class="carousel-track">
-        <div class="carousel-item"><img src="Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
-        <div class="carousel-item"><img src="Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
-        <div class="carousel-item"><img src="Bagara-Rice-2-3.jpg" alt="Bagara Rice"><span>Bagara Rice & Mirchi Ka Salan</span></div>
-        <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+        <div class="carousel-item"><img src="/Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
+        <div class="carousel-item"><img src="/Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
+        <div class="carousel-item"><img src="/Bagara-Rice-2-3.jpg" alt="Bagara Rice"><span>Bagara Rice & Mirchi Ka Salan</span></div>
+        <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
         <!-- Duplicate for continuous loop -->
-        <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-        <div class="carousel-item"><img src="khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
-        <div class="carousel-item"><img src="whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
-        <div class="carousel-item"><img src="palak.jpeg" alt="Khichdi"><span>Phalli Mutton</span></div>
+        <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+        <div class="carousel-item"><img src="/khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
+        <div class="carousel-item"><img src="/whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
+        <div class="carousel-item"><img src="/palak.jpeg" alt="Khichdi"><span>Phalli Mutton</span></div>
       </div>
     </div>
   </div>
@@ -943,14 +944,14 @@ setInterval(() => {
         <h3>Monday Menu</h3>
         <div class="menu-carousel">
           <div class="carousel-track">
-            <div class="carousel-item"><img src="Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
-            <div class="carousel-item"><img src="Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
-            <div class="carousel-item"><img src="Bagara-Rice-2-3.jpg" alt="Bagara Rice"><span>Bagara Rice & Mirchi Ka Salan</span></div>
-            <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+            <div class="carousel-item"><img src="/Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
+            <div class="carousel-item"><img src="/Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
+            <div class="carousel-item"><img src="/Bagara-Rice-2-3.jpg" alt="Bagara Rice"><span>Bagara Rice & Mirchi Ka Salan</span></div>
+            <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
             <!-- Duplicate for continuous loop -->
-            <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-            <div class="carousel-item"><img src="whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
+            <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+            <div class="carousel-item"><img src="/whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
           </div>
         </div>
       </div>
@@ -961,15 +962,15 @@ setInterval(() => {
         <h3>Tuesday Menu</h3>
         <div class="menu-carousel">
           <div class="carousel-track">
-            <div class="carousel-item"><img src="Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
-            <div class="carousel-item"><img src="Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
-            <div class="carousel-item"><img src="chi65.jpeg" alt="Chicken 65"><span>Chicken 65</span></div>
-            <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+            <div class="carousel-item"><img src="/Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
+            <div class="carousel-item"><img src="/Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
+            <div class="carousel-item"><img src="/chi65.jpeg" alt="Chicken 65"><span>Chicken 65</span></div>
+            <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
             <!-- Duplicate for continuous loop -->
-            <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-            <div class="carousel-item"><img src="Bhindi-ka-Salan-2-1-1200x1800.jpg" alt="Chicken 65"><span>Bhendi Ka Sharwa</span></div>
-            <div class="carousel-item"><img src="whole-wheat-roti-500x500.jpg" alt="Khichdi"><span>Wheat Roti</span></div>
+            <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+            <div class="carousel-item"><img src="/Bhindi-ka-Salan-2-1-1200x1800.jpg" alt="Chicken 65"><span>Bhendi Ka Sharwa</span></div>
+            <div class="carousel-item"><img src="/whole-wheat-roti-500x500.jpg" alt="Khichdi"><span>Wheat Roti</span></div>
           </div>
         </div>
       </div>
@@ -980,15 +981,15 @@ setInterval(() => {
         <h3>Sunday Menu</h3>
         <div class="menu-carousel">
           <div class="carousel-track">
-            <div class="carousel-item"><img src="Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
-            <div class="carousel-item"><img src="Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
-            <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+            <div class="carousel-item"><img src="/Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
+            <div class="carousel-item"><img src="/Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
+            <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
             <!-- Duplicate for continuous loop -->
-            <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-            <div class="carousel-item"><img src="khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
-            <div class="carousel-item"><img src="whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
-            <div class="carousel-item"><img src="palak.jpeg" alt="Khichdi"><span>Khatta Kaddu Mutton</span></div>
+            <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+            <div class="carousel-item"><img src="/khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
+            <div class="carousel-item"><img src="/whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
+            <div class="carousel-item"><img src="/palak.jpeg" alt="Khichdi"><span>Khatta Kaddu Mutton</span></div>
           </div>
         </div>
       </div>
@@ -1000,17 +1001,17 @@ setInterval(() => {
         <h3>Thursday Menu</h3>
         <div class="menu-carousel">
           <div class="carousel-track">
-            <div class="carousel-item"><img src="Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
-            <div class="carousel-item"><img src="Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
-            <div class="carousel-item"><img src="whole-wheat-roti-500x500.jpg" alt="Bagara Rice"><span>Wheat Roti</span></div>
-            <div class="carousel-item"><img src="chi65.jpeg" alt="Chicken 65"><span>Chicken 65</span></div>
-            <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+            <div class="carousel-item"><img src="/Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
+            <div class="carousel-item"><img src="/Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
+            <div class="carousel-item"><img src="/whole-wheat-roti-500x500.jpg" alt="Bagara Rice"><span>Wheat Roti</span></div>
+            <div class="carousel-item"><img src="/chi65.jpeg" alt="Chicken 65"><span>Chicken 65</span></div>
+            <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
             <!-- Duplicate for continuous loop -->
-            <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-            <div class="carousel-item"><img src="khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
-            <div class="carousel-item"><img src="hyderabadi-dum-chicken-curry2-1024x683.jpg" alt="Chicken 65"><span>Dum Ka Chicken</span></div>
-            <div class="carousel-item"><img src="palak.jpeg" alt="Khichdi"><span>Palak Mutton</span></div>
+            <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+            <div class="carousel-item"><img src="/khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
+            <div class="carousel-item"><img src="/hyderabadi-dum-chicken-curry2-1024x683.jpg" alt="Chicken 65"><span>Dum Ka Chicken</span></div>
+            <div class="carousel-item"><img src="/palak.jpeg" alt="Khichdi"><span>Palak Mutton</span></div>
           </div>
         </div>
       </div>
@@ -1021,15 +1022,15 @@ setInterval(() => {
         <h3>Friday Menu</h3>
         <div class="menu-carousel">
           <div class="carousel-track">
-            <div class="carousel-item"><img src="Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
-            <div class="carousel-item"><img src="Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
-            <div class="carousel-item"><img src="Bagara-Rice-2-3.jpg" alt="Bagara Rice"><span>Bagara Rice & Mirchi Ka Salan</span></div>
-            <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+            <div class="carousel-item"><img src="/Mutton-Biryani-Recipe.jpg" alt="Biryani"><span>Mutton Biryani</span></div>
+            <div class="carousel-item"><img src="/Chicken-Biryani-Recipe.jpg" alt="Biryani"><span>Chicken Biryani</span></div>
+            <div class="carousel-item"><img src="/Bagara-Rice-2-3.jpg" alt="Bagara Rice"><span>Bagara Rice & Mirchi Ka Salan</span></div>
+            <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
             <!-- Duplicate for continuous loop -->
-            <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-            <div class="carousel-item"><img src="khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
-            <div class="carousel-item"><img src="palak.jpeg" alt="Khichdi"><span>Palak Mutton</span></div>
+            <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+            <div class="carousel-item"><img src="/khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
+            <div class="carousel-item"><img src="/palak.jpeg" alt="Khichdi"><span>Palak Mutton</span></div>
           </div>
         </div>
       </div>
@@ -1040,14 +1041,14 @@ setInterval(() => {
         <h3>Saturday Menu</h3>
         <div class="menu-carousel">
           <div class="carousel-track">
-            <div class="carousel-item"><img src="Mutton-Tahari-Image-4-500x500.jpg" alt="Biryani"><span>Mutton Tahari</span></div>
-            <div class="carousel-item"><img src="khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
+            <div class="carousel-item"><img src="/Mutton-Tahari-Image-4-500x500.jpg" alt="Biryani"><span>Mutton Tahari</span></div>
+            <div class="carousel-item"><img src="/khichdi.jpg" alt="Khichdi"><span>Khichdi Khatta</span></div>
 
             <!-- Duplicate for continuous loop -->
-            <div class="carousel-item"><img src="white rice.webp" alt="Biryani"><span>White Rice</span></div>
-            <div class="carousel-item"><img src="khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
-            <div class="carousel-item"><img src="whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
-            <div class="carousel-item"><img src="palak.jpeg" alt="Khichdi"><span>Turai Mutton</span></div>
+            <div class="carousel-item"><img src="/white rice.webp" alt="Biryani"><span>White Rice</span></div>
+            <div class="carousel-item"><img src="/khatti dal.jpg" alt="Bagara Rice"><span>Khatti Dal</span></div>
+            <div class="carousel-item"><img src="/whole-wheat-roti-500x500.jpg" alt="Chicken 65"><span>Wheat Roti</span></div>
+            <div class="carousel-item"><img src="/palak.jpeg" alt="Khichdi"><span>Turai Mutton</span></div>
           </div>
         </div>
       </div>
@@ -1060,71 +1061,74 @@ setInterval(() => {
 
 <script>
  // --- Day hover logic ---
+const days = document.querySelectorAll(".suhoor-days .day");
+const menus = document.querySelectorAll(".suhoor-menu .menu-content");
+
+days.forEach(day => {
+  day.addEventListener("mouseenter", () => {   // <-- hover instead of click
+    // Remove active from all days
+    days.forEach(d => d.classList.remove("active"));
+    day.classList.add("active");
+
+    // Remove active from all menus
+    menus.forEach(menu => menu.classList.remove("active"));
+
+    // Show selected menu
+    const menuId = day.dataset.day;
+    const selectedMenu = document.getElementById(menuId);
+    selectedMenu.classList.add("active");
+  });
+});
+
+// --- Carousel logic (same as before) ---
 function initCarousel(carousel) {
   let isDragging = false;
   let startX;
   let scrollLeft;
-  let step = 2;       // normal auto-scroll speed
+  let step = 2;
   let direction = 1;
-  let idleStep = 4;   // faster when idle
-  let idleTimeout;
 
-  // --- Mouse drag ---
+  // Mouse drag
   carousel.addEventListener("mousedown", (e) => {
     isDragging = true;
-    startX = e.pageX - carousel.getBoundingClientRect().left;
+    startX = e.pageX - carousel.offsetLeft;
     scrollLeft = carousel.scrollLeft;
-    carousel.classList.add("dragging");
   });
-  carousel.addEventListener("mouseleave", () => { isDragging = false; carousel.classList.remove("dragging"); });
-  carousel.addEventListener("mouseup", () => { isDragging = false; carousel.classList.remove("dragging"); });
+  carousel.addEventListener("mouseleave", () => isDragging = false);
+  carousel.addEventListener("mouseup", () => isDragging = false);
   carousel.addEventListener("mousemove", (e) => {
     if(!isDragging) return;
     e.preventDefault();
-    const x = e.pageX - carousel.getBoundingClientRect().left;
-    const walk = (x - startX) * 3;
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 2;
     carousel.scrollLeft = scrollLeft - walk;
   });
 
-  // --- Touch drag ---
+  // Touch drag
   carousel.addEventListener("touchstart", (e) => {
     isDragging = true;
-    startX = e.touches[0].pageX - carousel.getBoundingClientRect().left;
+    startX = e.touches[0].pageX - carousel.offsetLeft;
     scrollLeft = carousel.scrollLeft;
-    clearTimeout(idleTimeout); // stop idle boost
-  }, {passive: true});
-
-  carousel.addEventListener("touchend", () => { 
-    isDragging = false; 
-    startIdleBoost(); // resume faster scroll after idle
   });
-
+  carousel.addEventListener("touchend", () => isDragging = false);
   carousel.addEventListener("touchmove", (e) => {
     if(!isDragging) return;
-    const x = e.touches[0].pageX - carousel.getBoundingClientRect().left;
-    const walk = (x - startX);
+    const x = e.touches[0].pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 10;
     carousel.scrollLeft = scrollLeft - walk;
-  }, {passive: true});
+  });
 
-  // --- Auto-scroll ---
+  // Auto-scroll loop
   function autoScroll() {
+    // Only auto-scroll if carousel is visible
     if(carousel.closest(".menu-content").classList.contains("active") && !isDragging) {
       carousel.scrollLeft += step * direction;
-
       if(carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) direction = -1;
       if(carousel.scrollLeft <= 0) direction = 1;
     }
     requestAnimationFrame(autoScroll);
   }
   autoScroll();
-
-  // --- Idle boost ---
-  function startIdleBoost() {
-    idleTimeout = setTimeout(() => {
-      step = idleStep;  // increase speed after user stops interacting
-    }, 1000); // 1 second after user stops
-  }
-  startIdleBoost();
 }
 
 // Initialize all carousels
@@ -1207,7 +1211,7 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
 
   <div class="dishes-grid">
     <div class="dish">
-      <img src="Chicken-Biryani-Recipe.jpg" alt="Hyderabadi Dum Biryani">
+      <img src="/Chicken-Biryani-Recipe.jpg" alt="Hyderabadi Dum Biryani">
       <div class="dish-overlay">
         <h3>Hyderabadi Dum Biryani</h3>
         <p>Slow-cooked basmati rice layered with marinated meat, saffron, and aromatic spices for royal flavour.</p>
@@ -1215,7 +1219,7 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
     </div>
 
     <div class="dish">
-      <img src="haleem.jpg" alt="Mutton Haleem">
+      <img src="/haleem.jpg" alt="Mutton Haleem">
       <div class="dish-overlay">
         <h3>Mutton Haleem</h3>
         <p>Rich Ramadan specialty made with wheat, lentils, and slow-cooked mutton blended to perfection.</p>
@@ -1223,7 +1227,7 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
     </div>
 
     <div class="dish">
-      <img src="khorma.jpeg" alt="Chicken Khorma">
+      <img src="/khorma.jpeg" alt="Chicken Khorma">
       <div class="dish-overlay">
         <h3>Chicken Khorma</h3>
         <p>Creamy royal gravy infused with traditional Hyderabadi spices served with naan or rice.</p>
