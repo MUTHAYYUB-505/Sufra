@@ -999,8 +999,9 @@ setInterval(() => {
 const days = document.querySelectorAll(".suhoor-days .day");
 const menus = document.querySelectorAll(".suhoor-menu .menu-content");
 
+// --- Day switching ---
 days.forEach(day => {
-  day.addEventListener("mouseenter", () => {   // <-- hover instead of click
+  day.addEventListener("mouseenter", () => { // hover for desktop
     // Remove active from all days
     days.forEach(d => d.classList.remove("active"));
     day.classList.add("active");
@@ -1013,14 +1014,23 @@ days.forEach(day => {
     const selectedMenu = document.getElementById(menuId);
     selectedMenu.classList.add("active");
   });
+
+  // Optional: click for mobile
+  day.addEventListener("click", () => {
+    days.forEach(d => d.classList.remove("active"));
+    day.classList.add("active");
+    menus.forEach(menu => menu.classList.remove("active"));
+    const menuId = day.dataset.day;
+    document.getElementById(menuId).classList.add("active");
+  });
 });
 
-// --- Carousel logic (same as before) ---
+// --- Carousel logic ---
 function initCarousel(carousel) {
   let isDragging = false;
   let startX;
   let scrollLeft;
-  let step = 2;
+  let step = 1.5;
   let direction = 1;
 
   // Mouse drag
@@ -1032,10 +1042,10 @@ function initCarousel(carousel) {
   carousel.addEventListener("mouseleave", () => isDragging = false);
   carousel.addEventListener("mouseup", () => isDragging = false);
   carousel.addEventListener("mousemove", (e) => {
-    if(!isDragging) return;
+    if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 2;
+    const walk = x - startX;
     carousel.scrollLeft = scrollLeft - walk;
   });
 
@@ -1047,19 +1057,17 @@ function initCarousel(carousel) {
   });
   carousel.addEventListener("touchend", () => isDragging = false);
   carousel.addEventListener("touchmove", (e) => {
-    if(!isDragging) return;
-    const x = e.touches[0].pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 10;
-    carousel.scrollLeft = scrollLeft - walk;
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - startX;
+    carousel.scrollLeft = scrollLeft - x;
   });
 
-  // Auto-scroll loop
+  // Auto-scroll only for active menu
   function autoScroll() {
-    // Only auto-scroll if carousel is visible
-    if(carousel.closest(".menu-content").classList.contains("active") && !isDragging) {
+    if (!isDragging && carousel.closest(".menu-content").classList.contains("active")) {
       carousel.scrollLeft += step * direction;
-      if(carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) direction = -1;
-      if(carousel.scrollLeft <= 0) direction = 1;
+      if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) direction = -1;
+      if (carousel.scrollLeft <= 0) direction = 1;
     }
     requestAnimationFrame(autoScroll);
   }
@@ -1068,6 +1076,7 @@ function initCarousel(carousel) {
 
 // Initialize all carousels
 document.querySelectorAll(".menu-carousel").forEach(initCarousel);
+
 </script>
 
 
