@@ -376,15 +376,11 @@ nav h2 {
 }
 /* Carousel track inside outer box */
 .menu-carousel {
-  display: flex;
-  gap: 20px;
   overflow-x: auto;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-
-  touch-action: pan-x;      /* ⭐ allows horizontal swipe */
-  cursor: grab;
+  touch-action: pan-x;
 }
+
 
 .menu-carousel::-webkit-scrollbar {
   display: none; /* hide scrollbar */
@@ -421,10 +417,7 @@ nav h2 {
 }
 
 /* Continuous scrolling animation */
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } 
-}
+
 /* Hide inactive menu */
 .menu-content { display: none; }
 .menu-content.active { display: block; }
@@ -436,13 +429,7 @@ nav h2 {
 }
 
 /* Slide Animation */
-@keyframes slide {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-25%); }
-  50% { transform: translateX(-50%); }
-  75% { transform: translateX(-75%); }
-  100% { transform: translateX(0); }
-}
+
 
 /* Hide inactive menu */
 .menu-content { display: none; }
@@ -1305,6 +1292,49 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
   <p>Subekha, Alkhobar • Call / WhatsApp: +966 53 882 3485</p>
   <p>© 2026 Sufra Nation. All rights reserved.</p>
 </footer>
+
+<script>
+
+document.querySelectorAll(".menu-carousel").forEach(carousel => {
+  let requestID;
+  let scrollPos = carousel.scrollLeft;
+  const speed = 0.5; // LOWER this for slower speed (e.g., 0.2), HIGHER for faster (e.g., 1.5)
+
+  function animate() {
+    scrollPos += speed;
+    carousel.scrollLeft = scrollPos;
+
+    // Reset when reaching the end
+    if (scrollPos + carousel.clientWidth >= carousel.scrollWidth) {
+      scrollPos = 0;
+    }
+
+    requestID = requestAnimationFrame(animate);
+  }
+
+  function start() {
+    if (!requestID) requestID = requestAnimationFrame(animate);
+  }
+
+  function stop() {
+    cancelAnimationFrame(requestID);
+    requestID = null;
+    scrollPos = carousel.scrollLeft; // Sync variable with actual position
+  }
+
+  // Start immediately
+  start();
+
+  // Interaction listeners
+  carousel.addEventListener("touchstart", stop);
+  carousel.addEventListener("mousedown", stop);
+  carousel.addEventListener("touchend", start);
+  carousel.addEventListener("mouseup", start);
+  carousel.addEventListener("mouseleave", start);
+});
+</script>
+
+
 
 </body>
 </html>
