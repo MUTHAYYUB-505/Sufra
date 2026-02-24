@@ -3,33 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sufra Nation | Luxury Restaurant</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* prevent horizontal scroll */
+  font-family: 'YourFont', sans-serif;
+}
+  /* Navbar */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(212,175,55,0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+}
 
-    /* Hamburger menu lines */
+nav h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  letter-spacing: 2px;
+  font-size: 1.6rem;
+}
+
+/* Links */
+.nav-links a {
+  color: #ddd;
+  text-decoration: none;
+  margin-left: 30px;
+  font-size: 0.95rem;
+  position: relative;
+  transition: .3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transition: .3s;
+}
+
+.nav-links a:hover {
+  color: var(--gold);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Hamburger */
 .hamburger {
   display: none; /* hide on desktop */
   flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
   cursor: pointer;
 }
 
 .hamburger span {
-  width: 25px;
+  display: block;
   height: 3px;
-  background: var(--gold);
+  background-color: var(--gold);
   border-radius: 2px;
-  transition: 0.3s;
 }
 
-/* Show hamburger on mobile */
+/* Responsive Mobile */
 @media (max-width: 900px) {
-  nav div { display: none; } /* hide normal links */
-  .hamburger { display: flex; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: rgba(0,0,0,0.9);
+    padding: 15px 20px;
+    border-radius: 10px;
+  }
+  
+  .hamburger {
+    display: flex;
+  }
 }
-
-
     :root{
       --gold:#d4af37;
       --gold-light:#f6e27a;
@@ -742,14 +812,24 @@
 
 <nav>
   <h2>SUFRA NATION</h2>
-  <div>
+
+  <!-- Navigation links -->
+  <div class="nav-links">
     <a href="#about">About</a>
     <a href="#suhoor">Suhoor</a>
     <a href="#iftar">Iftar</a>
     <a href="#gallery">Gallery</a>
     <a href="#contact">Contact</a>
   </div>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </nav>
+ 
 
 <header>
   <div class="hero">
@@ -761,19 +841,20 @@
 
 <script>
 const hamburger = document.querySelector(".hamburger");
-const navLinks = document.querySelector("nav div");
+const navLinks = document.querySelector(".nav-links");
 
 hamburger.addEventListener("click", (e) => {
   e.stopPropagation(); // prevent immediate close
   navLinks.style.display = navLinks.style.display === "flex" ? "none" : "flex";
-  navLinks.style.flexDirection = "column";
-  navLinks.style.position = "absolute";
-  navLinks.style.top = "60px";
-  navLinks.style.right = "20px";
-  navLinks.style.background = "rgba(0,0,0,0.9)";
-  navLinks.style.padding = "15px 20px";
-  navLinks.style.borderRadius = "10px";
 });
+
+// Close menu when clicking outside
+document.addEventListener("click", (e) => {
+  if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+    navLinks.style.display = "none";
+  }
+});
+
 
 /* Close menu when clicking outside */
 document.addEventListener("click", () => {
@@ -1003,7 +1084,7 @@ function initCarousel(carousel) {
   let isDragging = false;
   let startX;
   let scrollLeft;
-  let step = 0.3;
+  let step = 2.9;
   let direction = 1;
 
   // Mouse drag
@@ -1018,7 +1099,7 @@ function initCarousel(carousel) {
     if(!isDragging) return;
     e.preventDefault();
     const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 2;
+    const walk = (x - startX) * 7;
     carousel.scrollLeft = scrollLeft - walk;
   });
 
@@ -1032,7 +1113,7 @@ function initCarousel(carousel) {
   carousel.addEventListener("touchmove", (e) => {
     if(!isDragging) return;
     const x = e.touches[0].pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 2;
+    const walk = (x - startX) * 15;
     carousel.scrollLeft = scrollLeft - walk;
   });
 
@@ -1129,7 +1210,7 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
 
   <div class="dishes-grid">
     <div class="dish">
-      <img src="/Chicken-Biryani-Recipe.jpg" alt="Hyderabadi Dum Biryani">
+      <img src="Chicken-Biryani-Recipe.jpg" alt="Hyderabadi Dum Biryani">
       <div class="dish-overlay">
         <h3>Hyderabadi Dum Biryani</h3>
         <p>Slow-cooked basmati rice layered with marinated meat, saffron, and aromatic spices for royal flavour.</p>
@@ -1137,7 +1218,7 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
     </div>
 
     <div class="dish">
-      <img src="/haleem.jpg" alt="Mutton Haleem">
+      <img src="haleem.jpg" alt="Mutton Haleem">
       <div class="dish-overlay">
         <h3>Mutton Haleem</h3>
         <p>Rich Ramadan specialty made with wheat, lentils, and slow-cooked mutton blended to perfection.</p>
@@ -1145,7 +1226,7 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
     </div>
 
     <div class="dish">
-      <img src="/khorma.jpeg" alt="Chicken Khorma">
+      <img src="khorma.jpeg" alt="Chicken Khorma">
       <div class="dish-overlay">
         <h3>Chicken Khorma</h3>
         <p>Creamy royal gravy infused with traditional Hyderabadi spices served with naan or rice.</p>
