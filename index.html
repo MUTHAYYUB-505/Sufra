@@ -1060,74 +1060,71 @@ setInterval(() => {
 
 <script>
  // --- Day hover logic ---
-const days = document.querySelectorAll(".suhoor-days .day");
-const menus = document.querySelectorAll(".suhoor-menu .menu-content");
-
-days.forEach(day => {
-  day.addEventListener("mouseenter", () => {   // <-- hover instead of click
-    // Remove active from all days
-    days.forEach(d => d.classList.remove("active"));
-    day.classList.add("active");
-
-    // Remove active from all menus
-    menus.forEach(menu => menu.classList.remove("active"));
-
-    // Show selected menu
-    const menuId = day.dataset.day;
-    const selectedMenu = document.getElementById(menuId);
-    selectedMenu.classList.add("active");
-  });
-});
-
-// --- Carousel logic (same as before) ---
 function initCarousel(carousel) {
   let isDragging = false;
   let startX;
   let scrollLeft;
-  let step = 2.9;
+  let step = 2;       // normal auto-scroll speed
   let direction = 1;
+  let idleStep = 4;   // faster when idle
+  let idleTimeout;
 
-  // Mouse drag
+  // --- Mouse drag ---
   carousel.addEventListener("mousedown", (e) => {
     isDragging = true;
-    startX = e.pageX - carousel.offsetLeft;
+    startX = e.pageX - carousel.getBoundingClientRect().left;
     scrollLeft = carousel.scrollLeft;
+    carousel.classList.add("dragging");
   });
-  carousel.addEventListener("mouseleave", () => isDragging = false);
-  carousel.addEventListener("mouseup", () => isDragging = false);
+  carousel.addEventListener("mouseleave", () => { isDragging = false; carousel.classList.remove("dragging"); });
+  carousel.addEventListener("mouseup", () => { isDragging = false; carousel.classList.remove("dragging"); });
   carousel.addEventListener("mousemove", (e) => {
     if(!isDragging) return;
     e.preventDefault();
-    const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 7;
+    const x = e.pageX - carousel.getBoundingClientRect().left;
+    const walk = (x - startX) * 3;
     carousel.scrollLeft = scrollLeft - walk;
   });
 
-  // Touch drag
+  // --- Touch drag ---
   carousel.addEventListener("touchstart", (e) => {
     isDragging = true;
-    startX = e.touches[0].pageX - carousel.offsetLeft;
+    startX = e.touches[0].pageX - carousel.getBoundingClientRect().left;
     scrollLeft = carousel.scrollLeft;
-  });
-  carousel.addEventListener("touchend", () => isDragging = false);
-  carousel.addEventListener("touchmove", (e) => {
-    if(!isDragging) return;
-    const x = e.touches[0].pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 15;
-    carousel.scrollLeft = scrollLeft - walk;
+    clearTimeout(idleTimeout); // stop idle boost
+  }, {passive: true});
+
+  carousel.addEventListener("touchend", () => { 
+    isDragging = false; 
+    startIdleBoost(); // resume faster scroll after idle
   });
 
-  // Auto-scroll loop
+  carousel.addEventListener("touchmove", (e) => {
+    if(!isDragging) return;
+    const x = e.touches[0].pageX - carousel.getBoundingClientRect().left;
+    const walk = (x - startX);
+    carousel.scrollLeft = scrollLeft - walk;
+  }, {passive: true});
+
+  // --- Auto-scroll ---
   function autoScroll() {
-    // Only auto-scroll if carousel is visible
     if(carousel.closest(".menu-content").classList.contains("active") && !isDragging) {
       carousel.scrollLeft += step * direction;
+
       if(carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) direction = -1;
       if(carousel.scrollLeft <= 0) direction = 1;
     }
     requestAnimationFrame(autoScroll);
   }
   autoScroll();
+
+  // --- Idle boost ---
+  function startIdleBoost() {
+    idleTimeout = setTimeout(() => {
+      step = idleStep;  // increase speed after user stops interacting
+    }, 1000); // 1 second after user stops
+  }
+  startIdleBoost();
 }
 
 // Initialize all carousels
