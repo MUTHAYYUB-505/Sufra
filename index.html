@@ -376,14 +376,22 @@ nav h2 {
 }
 /* Carousel track inside outer box */
 .menu-carousel {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
+  display: flex;
+  overflow-x: auto; /* Required for finger swiping */
+  scroll-behavior: auto; /* "smooth" conflicts with JS, keep it auto */
+  -webkit-overflow-scrolling: touch; /* smooth momentum on iPhone */
+  gap: 10px; /* space between images */
 }
 
-
+/* Hide scrollbar for Chrome, Safari and Opera */
 .menu-carousel::-webkit-scrollbar {
-  display: none; /* hide scrollbar */
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.menu-carousel {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .carousel-track {
@@ -1294,21 +1302,26 @@ document.querySelectorAll(".menu-carousel").forEach(initCarousel);
 </footer>
 
 <script>
-
 document.querySelectorAll(".menu-carousel").forEach(carousel => {
+  const speed = 2; // adjust scroll speed
   let requestID;
-  let scrollPos = carousel.scrollLeft;
-  const speed = 0.5; // LOWER this for slower speed (e.g., 0.2), HIGHER for faster (e.g., 1.5)
+
+  // Duplicate all items for seamless looping
+  const items = Array.from(carousel.children);
+  items.forEach(item => {
+    const clone = item.cloneNode(true);
+    carousel.appendChild(clone);
+  });
+
+  let scrollPos = 0;
 
   function animate() {
     scrollPos += speed;
-    carousel.scrollLeft = scrollPos;
-
-    // Reset when reaching the end
-    if (scrollPos + carousel.clientWidth >= carousel.scrollWidth) {
+    if (scrollPos >= carousel.scrollWidth / 2) {
+      // Reset to the start of original items
       scrollPos = 0;
     }
-
+    carousel.scrollLeft = scrollPos;
     requestID = requestAnimationFrame(animate);
   }
 
@@ -1319,13 +1332,12 @@ document.querySelectorAll(".menu-carousel").forEach(carousel => {
   function stop() {
     cancelAnimationFrame(requestID);
     requestID = null;
-    scrollPos = carousel.scrollLeft; // Sync variable with actual position
   }
 
-  // Start immediately
+  // Start the loop
   start();
 
-  // Interaction listeners
+  // Pause on interaction
   carousel.addEventListener("touchstart", stop);
   carousel.addEventListener("mousedown", stop);
   carousel.addEventListener("touchend", start);
@@ -1333,6 +1345,7 @@ document.querySelectorAll(".menu-carousel").forEach(carousel => {
   carousel.addEventListener("mouseleave", start);
 });
 </script>
+
 
 
 
